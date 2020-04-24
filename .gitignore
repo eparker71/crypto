@@ -1,0 +1,10 @@
+.vscode
+*.sqlite
+*.db
+*.csv
+*.cfg
+report*
+bin/
+include/
+lib/
+
