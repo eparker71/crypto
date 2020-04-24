@@ -1,15 +1,12 @@
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import requests
-#import requests_cache
 import json
 import os
 import csv
 import pprint
 
 pp = pprint.PrettyPrinter(depth=6)
-
-#requests_cache.install_cache('cache', backend='sqlite', expire_after=60)
 
 # You must set these in your environment
 TEXTBELT_KEY    = os.environ.get("TEXTBELT_KEY")
@@ -27,7 +24,7 @@ headers = {
   'X-CMC_PRO_API_KEY': CMC_PRO_API_KEY,
 }
 
-session = Session() #requests_cache.CachedSession()
+session = Session()
 session.headers.update(headers)
 
 parameters = {
@@ -35,7 +32,7 @@ parameters = {
 }
 
 """
-create a csv file in the following format:
+create a csv file called "message_rules.csv" in the following format:
 
 Asset,Direction,Limit 
 BTC,0,7125.00
@@ -43,8 +40,8 @@ BTC,1,6950.00
 
 The first column contains the asset symbol, here we have BTC (Bitcon)
 The second column tell us if we want this to be greater than or less than the limit
-0 = greater than
-1 = less than
+0 = greater than Limit
+1 = less than Limit
 the last column is the limit we are looking to test in dollars
 
 You can have as many assets as you like

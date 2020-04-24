@@ -2,11 +2,8 @@
 
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
-#import requests_cache
 import json
 import os
-
-#requests_cache.install_cache('cache', backend='sqlite', expire_after=180)
 
 CMC_PRO_API_KEY = os.environ.get("CMC_PRO_API_KEY")
 coin_list = ['BAT', 'LTC', 'BTC', 'XLM', 'XRP']
@@ -21,9 +18,7 @@ headers = {
   'X-CMC_PRO_API_KEY': CMC_PRO_API_KEY,
 }
 
-#session = requests_cache.CachedSession() 
 session = Session()
-
 session.headers.update(headers)
 
 try:
