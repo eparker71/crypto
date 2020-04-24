@@ -7,4 +7,5 @@ report*
 bin/
 include/
 lib/
+send_message.py
 
