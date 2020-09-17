@@ -1,3 +1,4 @@
-delete from Data;
+
+DROP TABLE Data;
 .mode csv
 .import ./data.csv Data 

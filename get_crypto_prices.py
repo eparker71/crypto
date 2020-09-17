@@ -5,17 +5,16 @@ from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 import os
 
-CMC_PRO_API_KEY = os.environ.get("CMC_PRO_API_KEY")
-coin_list = ['BAT', 'LTC', 'BTC', 'XLM', 'XRP']
+import settings
 
 url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 parameters = {
-        'symbol' : ','.join(coin_list),
+        'symbol' : ','.join(settings.COIN_LIST),
 }
 
 headers = {
   'Accepts': 'application/json',
-  'X-CMC_PRO_API_KEY': CMC_PRO_API_KEY,
+  'X-CMC_PRO_API_KEY': settings.CMC_PRO_API_KEY,
 }
 
 session = Session()
@@ -25,7 +24,7 @@ try:
   response = session.get(url, params=parameters)
   data = json.loads(response.text)
   print("Asset,Current Price")
-  for coin in coin_list:
+  for coin in settings.COIN_LIST:
     print("{},{:0.4f}".format(coin, data['data'][coin]['quote']['USD']['price']))
 
 except (ConnectionError, Timeout, TooManyRedirects) as e:

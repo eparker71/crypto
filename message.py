@@ -1,34 +1,26 @@
 from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
+from datetime import datetime
 import requests
 import json
 import os
 import csv
 import pprint
+import settings
 
+now = datetime.now()
 pp = pprint.PrettyPrinter(depth=6)
-
-# You must set these in your environment
-TEXTBELT_KEY    = os.environ.get("TEXTBELT_KEY")
-CMC_PRO_API_KEY = os.environ.get("CMC_PRO_API_KEY")
-TEXT_NUM        = os.environ.get("TEXT_NUM")
-
-# using these API's
-quote_url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
-text_url  = 'https://textbelt.com/text'
-
-coin_list = ['BAT', 'LTC', 'BTC', 'XLM', 'XRP']
 
 headers = {
   'Accepts': 'application/json',
-  'X-CMC_PRO_API_KEY': CMC_PRO_API_KEY,
+  'X-CMC_PRO_API_KEY': settings.CMC_PRO_API_KEY,
 }
 
 session = Session()
 session.headers.update(headers)
 
 parameters = {
-        'symbol' : ','.join(coin_list),
+        'symbol' : ','.join(settings.COIN_LIST),
 }
 
 """
@@ -50,37 +42,36 @@ def main():
 
     current_price = {}
     try:
-        response = session.get(quote_url, params=parameters)
+        response = session.get(settings.QUOTE_URL, params=parameters)
         data = json.loads(response.text)
-        for coin in coin_list:
+        print(data)
+        for coin in settings.COIN_LIST:
             current_price[coin] = float(data['data'][coin]['quote']['USD']['price'])
     except (ConnectionError, Timeout, TooManyRedirects, KeyError) as e:
         print(e)
         return 
 
-    pp.pprint(current_price)
+    send = False
+    message = ""
     with open('message_rules.csv', newline='') as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            send = False
-            asset = row["Asset"]
-            direction = int(row["Direction"])
-            limit = float(row["Limit"])            
+            asset = row["Asset"].strip()
+            direction = int(row["Direction"].strip())
+            limit = float(row["Limit"].strip())            
             if direction == 0 and current_price[asset] > limit:
-                message = "{} is above ${}, curr ${:.3f}".format(asset, limit, current_price[asset])
+                message += "{} is above ${}, curr ${:.3f}\n".format(asset, limit, current_price[asset])
                 send = True
             elif direction == 1 and current_price[asset] < limit:
-                message = "{} is below ${}, curr ${:.3f}".format(asset, limit, current_price[asset])
+                message += "{} is below ${}, curr ${:.3f}\n".format(asset, limit, current_price[asset])
                 send = True
 
-            if send:
-                resp = requests.post(text_url, {
-                    'phone': TEXT_NUM,
-                    'message': message,
-                    'key': TEXTBELT_KEY,
-                })
-                print(resp.text)
-
+    if send:
+        resp = requests.post(settings.TEXT_URL, {
+            'phone': settings.TEXT_NUM,
+            'message': message,
+            'key': settings.TEXTBELT_KEY,
+        })
 
 if __name__ == "__main__":
     main()

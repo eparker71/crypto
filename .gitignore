@@ -3,9 +3,22 @@
 *.db
 *.csv
 *.cfg
+*.pyc
+
+# vs workspace file
+crypto.code-workspace
+
 report*
 bin/
 include/
 lib/
-send_message.py
+
+# temp hold in these 2
+send_message.*
+coinbase_connect.py
+
+# settings contain private keys etc...
+# don't check it into version control
+settings.py
+
 

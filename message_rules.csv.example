@@ -1,0 +1,7 @@
+Asset,Direction,Limit,Comment
+BTC,0,12000.00, Bitcon Above $12,000
+BTC,1,9000.00, Bitcoin below $9,000
+BAT,0,0.31, BAT above $0.31 
+BAT,1,0.17, BAT below $0.17
+LTC,1,48.00, LTC below $48
+

@@ -1,0 +1,23 @@
+import os
+import csv
+
+# You must set these in your environment or you can set them here if you like
+CMC_PRO_API_KEY = os.environ.get("CMC_PRO_API_KEY")
+TEXTBELT_KEY    = os.environ.get("TEXTBELT_KEY")
+TEXT_NUM        = os.environ.get("TEXT_NUM")
+
+# using these API's
+QUOTE_URL = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
+TEXT_URL  = 'https://textbelt.com/text'
+
+# Extract the list of Assets from the data.csv file
+assets = set()
+with open('data.csv', newline='') as csvfile:
+    reader = csv.DictReader(csvfile)
+    assets = { row["Asset"] for row in reader }
+    
+COIN_LIST = list(assets)
+
+# You can specify any assets you want to remove here
+#coin_list.remove('BAT')
+#coin_list.remove('XRP')
