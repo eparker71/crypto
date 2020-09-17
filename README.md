@@ -30,8 +30,8 @@ pip3 install requests
 ```
 # How to use the tools
 
-1.Goto coinbase and generate a report of your transactions
-2.Download as a csv file and place it in the same directory as this project
+* Goto coinbase and generate a report of your transactions
+* Download as a csv file and place it in the same directory as this project
 
 # How to run the report
 
