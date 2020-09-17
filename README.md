@@ -56,7 +56,10 @@ BTC,1,9000.00, Bitcoin below $9,000
 ```
 
 **Asset** is BTC (Bitcon)
+
 **Direction** is either 0 (Above) or 1 (below)
+
 **Limit** is the price you want to trigger the message
+
 **Comment** is a place for you to add comments, it is ignored by the system
 
