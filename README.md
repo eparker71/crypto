@@ -32,10 +32,10 @@ pip3 install requests
 
 # How to run the report
 
-# make the report script executable
+## make the report script executable
 chmod +x view_report.sh
 
-# now you can run the report 
+## now you can run the report 
 ./view_report.sh
 
 # How to recieve text messages
