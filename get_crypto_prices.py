@@ -4,10 +4,8 @@ from requests import Request, Session
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 import os
-
 import settings
 
-url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 parameters = {
         'symbol' : ','.join(settings.COIN_LIST),
 }
@@ -21,7 +19,7 @@ session = Session()
 session.headers.update(headers)
 
 try:
-  response = session.get(url, params=parameters)
+  response = session.get(settings.QUOTE_URL, params=parameters)
   data = json.loads(response.text)
   print("Asset,Current Price")
   for coin in settings.COIN_LIST:
