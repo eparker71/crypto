@@ -25,6 +25,9 @@ try:
   for coin in settings.COIN_LIST:
     print("{},{:0.4f}".format(coin, data['data'][coin]['quote']['USD']['price']))
 
+  # this is a hack to fix a problem retrieving this asset from the api
+  print("{},{:0.4f}".format("CGLD", 2.08))
+
 except (ConnectionError, Timeout, TooManyRedirects) as e:
   print(e)
 

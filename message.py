@@ -37,16 +37,18 @@ The second column tell us if we want this to be greater than or less than the li
 the last column is the limit we are looking to test in dollars
 
 You can have as many assets as you like
+
 """
 def main():
 
-    current_price = {}
+    current_price_change = {}
     try:
         response = session.get(settings.QUOTE_URL, params=parameters)
         data = json.loads(response.text)
-        print(data)
         for coin in settings.COIN_LIST:
-            current_price[coin] = float(data['data'][coin]['quote']['USD']['price'])
+            # this needs to be cleaned up, we should get using get and
+            # have a plan for the coin not existing
+            current_price_change[coin] = float(data['data'][coin]['quote']['USD']['percent_change_1h'])
     except (ConnectionError, Timeout, TooManyRedirects, KeyError) as e:
         print(e)
         return 
@@ -59,11 +61,11 @@ def main():
             asset = row["Asset"].strip()
             direction = int(row["Direction"].strip())
             limit = float(row["Limit"].strip())            
-            if direction == 0 and current_price[asset] > limit:
-                message += "{} is above ${}, curr ${:.3f}\n".format(asset, limit, current_price[asset])
+            if direction == 0 and current_price_change[asset] > limit:
+                message += "{} UP, curr {:.3f}% (1hr)\n".format(asset, current_price_change[asset])
                 send = True
-            elif direction == 1 and current_price[asset] < limit:
-                message += "{} is below ${}, curr ${:.3f}\n".format(asset, limit, current_price[asset])
+            elif direction == 1 and current_price_change[asset] < limit:
+                message += "{} DOWN, curr {:.3f}% (1hr)\n".format(asset, current_price_change[asset])
                 send = True
 
     if send:
@@ -72,6 +74,7 @@ def main():
             'message': message,
             'key': settings.TEXTBELT_KEY,
         })
+        print(resp.json)
 
 if __name__ == "__main__":
     main()
