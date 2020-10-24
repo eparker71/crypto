@@ -60,7 +60,8 @@ def main():
         for row in reader:
             asset = row["Asset"].strip()
             direction = int(row["Direction"].strip())
-            limit = float(row["Limit"].strip())            
+            limit = float(row["Limit"].strip())
+            print("{} {} {} {}".format(asset, direction, limit, current_price_change[asset]))            
             if direction == 0 and current_price_change[asset] > limit:
                 message += "{} UP, curr {:.3f}% (1hr)\n".format(asset, current_price_change[asset])
                 send = True
